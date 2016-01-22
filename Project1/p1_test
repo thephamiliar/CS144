@@ -1,7 +1,7 @@
 #!/bin/bash
 GRADING_DIR=$HOME/grading
 TMP_DIR=/tmp/p1-grading/
-REQUIRED_FILES="actors.sql ComputeSHA.java"
+REQUIRED_FILES="team.txt actors.sql ComputeSHA.java"
 
 
 # usage
@@ -62,23 +62,23 @@ echo "Compiling ComputeSHA.java..."
 javac ComputeSHA.java
 if [ "$?" -ne "0" ] 
 then
-	echo "ERROR: Compilation of ComputeSHA.java failed" 1>&2
-	rm -rf ${TMP_DIR}
-	exit 1
+    echo "ERROR: Compilation of ComputeSHA.java failed" 1>&2
+    rm -rf ${TMP_DIR}
+    exit 1
 fi
 
 # test ComputeSHA.java, using test input files
-INPUT_FILE="${TMP_DIR}/test-input.txt"
+INPUT_FILE="${TMP_DIR}/sample-input.txt"
 echo "A simple test input file to check ComputeSHA" > ${INPUT_FILE}
 RESULT1=`java ComputeSHA ${INPUT_FILE}`
 RESULT2=`sha1sum ${INPUT_FILE} | awk '{print $1}'`
 
 if [ "$RESULT1" = "$RESULT2" ]; then
-	echo "SUCCESS!" 1>&2
+    echo "SUCCESS!" 1>&2
 else
-	echo "ERROR: ComputeSHA computes an incorrect SHA value." 1>&2
-	rm -rf ${TMP_DIR}
-	exit 1
+    echo "ERROR: ComputeSHA computes an incorrect SHA value." 1>&2
+    rm -rf ${TMP_DIR}
+    exit 1
 fi
 
 # clean up

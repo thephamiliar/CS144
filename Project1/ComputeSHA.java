@@ -9,11 +9,15 @@ public class ComputeSHA {
 		MessageDigest md;
 
 		try {
+			// get bytes from input
 			path = Paths.get(args[0]);
 			byte[] input = Files.readAllBytes(path);
-			md = MessageDigest.getInstance("SHA1");
 
+			// convert to SHA-1 encoding
+			md = MessageDigest.getInstance("SHA1");
 			md.update(input);
+
+			// print bytes to hex format
 			byte[] output = md.digest();
 			System.out.println(bytesToHex(output));
 		} catch (Exception e) {
@@ -21,9 +25,9 @@ public class ComputeSHA {
 		}
 	}
 
-	private static String bytesToHex(byte[] hash) {
+	private static String bytesToHex(byte[] bytes) {
 		Formatter formatter = new Formatter();
-		for (byte b : hash) {
+		for (byte b : bytes) {
 			formatter.format("%02x", b);
 		}
 

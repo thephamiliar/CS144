@@ -2,6 +2,10 @@
 <html>
 <head>
 	<style>
+		body {
+			margin: 0px;
+			padding: 0px;
+		}
 		#header {
 		    background-color: yellow;
 		    height: 80px;
@@ -9,9 +13,8 @@
 		    text-align: center;
 		    position: fixed;
 		    top: 0;
-		    left: 0;
-		    width: 100%;
 		    z-index: 100;
+		    width: 100%;
 		}
 
 		#header > p {
@@ -27,20 +30,6 @@
 			bottom: 0;
 		    background-color: cyan;
 		    text-align: right;
-		    left: 0;
-		}
-
-		#column1 {
-			display: inline-block;
-			margin: 0em 0.5em 0em 1em;
-			float: left;
-			width: 48%;
-		}
-		#column2 {
-			display: inline-block;
-			margin: 0em 1em 0em 0.5em;
-			float: right;
-			width: 48%;
 		}
 
 		#content {
@@ -48,6 +37,20 @@
 			overflow: scroll;
 			position: absolute;
 			top: 80px;
+			width: 100%;
+		}
+
+		#column1 {
+			display: inline-block;
+			width: 48%;
+			padding: 0em 0.5em 0em 1em;
+			float: left;
+		}
+		#column2 {
+			display: inline-block;
+			width: 48%;
+			padding: 0em 1em 0em 0.5em;
+			float: right;
 		}
 	</style>
 	<title>CS144: Web Applications</title>

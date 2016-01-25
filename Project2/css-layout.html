@@ -38,19 +38,15 @@
 			position: absolute;
 			top: 80px;
 			width: 100%;
+
+			display: table;
+    		table-layout: fixed;
+    		border-collapse: separate;
+			border-spacing: 1em 0em;
 		}
 
-		#column1 {
-			display: inline-block;
-			width: 48%;
-			padding: 0em 0.5em 0em 1em;
-			float: left;
-		}
-		#column2 {
-			display: inline-block;
-			width: 48%;
-			padding: 0em 1em 0em 0.5em;
-			float: right;
+		#content div {
+			display: table-cell;
 		}
 	</style>
 	<title>CS144: Web Applications</title>
@@ -60,7 +56,7 @@
     	<p>CSS Layout Project</p>
     </div>
     <div id="content">
-	    <div id="column1">
+	    <div>
 		    <h2>Course Description</h2>
 				<p>Developing today's Web applications requires knowledge on a number of diverse topics, including the basic Web architecture, XML, relational database, information retrieval, security and user models. Traditionally, these topics have been taught in different subdiscplines of computer science, so students had to take a fair number of courses to learn the basic concepts necessary to build effective and safe Web applications. The goal of this class is to teach students the most important concepts for building Web applications and give them the first-hand experience with the basic tools for such a task.</p>
 				<p>The topics that will be covered in the class include:</p>
@@ -74,10 +70,9 @@
 				</ul>
 				<p>To help students digest the materials learned in the class, we will assign a quarter-long class project (which will be divided into multiple subparts), in which students have to build a Web service and a Web site that help users navigate an eBay data. The dataset together with the basic tools will be provided on the class Web site.</p>
 		</div>
-		<div id="column2">
+		<div>
 			<h2>Academic Integrity</h2>
-			<p>
-			At <a href="http://www.studentgroups.ucla.edu/dos/students/integrity"
+			<p>At <a href="http://www.studentgroups.ucla.edu/dos/students/integrity"
 			target="_blank">http://www.studentgroups.ucla.edu/dos/students/integrity</a>,
 			the Office of the Dean of Students presents University policy on academic
 			integrity, with special attention to cheating, plagiarism, and student

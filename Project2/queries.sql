@@ -1,0 +1,1 @@
+SELECT SellerID FROM Items WHERE SellerID NOT IN (SELECT SellersID FROM Sellers);

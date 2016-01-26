@@ -185,11 +185,11 @@ class MyParser {
         
         try {
             doc = builder.parse(xmlFile);
-            itemFile = new PrintWriter("items.csv");
-            categoryFile = new PrintWriter("categories.csv");
-            bidFile = new PrintWriter("bids.csv");
-            sellerFile = new PrintWriter("sellers.csv");
-            bidderFile = new PrintWriter("bidders.csv");
+            itemFile = new PrintWriter(new FileWriter("items.csv", true));
+            categoryFile = new PrintWriter(new FileWriter("categories.csv", true));
+            bidFile = new PrintWriter(new FileWriter("bids.csv", true));
+            sellerFile = new PrintWriter(new FileWriter("sellers.csv", true));
+            bidderFile = new PrintWriter(new FileWriter("bidders.csv", true));
                
         }
         catch (IOException e) {
@@ -205,11 +205,11 @@ class MyParser {
         
         /* At this point 'doc' contains a DOM representation of an 'Items' XML
          * file. Use doc.getDocumentElement() to get the root Element. */
-        System.out.println("Successfully parsed - " + xmlFile);
+        //System.out.println("Successfully parsed - " + xmlFile);
         
         Element items = doc.getDocumentElement();
 
-        System.out.println("Retrieved root : " + items.getTagName());
+        //System.out.println("Retrieved root : " + items.getTagName());
 
         Element[] itemArray = getElementsByTagNameNR(items, "Item");
 
@@ -218,25 +218,25 @@ class MyParser {
             StringBuilder itemLine = new StringBuilder(200);
 
             String itemID = item.getAttribute("ItemID");
-            itemLine.append('"' + itemID + "\"," + '"' + getElementTextByTagNameNR(item, "Name") + "\",");
+            itemLine.append(itemID + columnSeparator + getElementTextByTagNameNR(item, "Name") + columnSeparator);
             //System.out.println("Line string : " + itemLine);
             //get Category+
             Element[] categoryArray = getElementsByTagNameNR(item, "Category");
             for ( Element category : categoryArray){
                 StringBuilder categoryLine = new StringBuilder(200);
                 String categoryText = getElementText(category);
-                categoryLine.append('"' + itemID + "\"," + '"' + categoryText + "\"");
+                categoryLine.append(itemID + columnSeparator + categoryText);
                 categoryFile.println(categoryLine.toString() );
                 categoryFile.flush();
             }
             //get Currently
-            itemLine.append('"' + strip(getElementTextByTagNameNR(item, "Currently")) + "\",");
+            itemLine.append(strip(getElementTextByTagNameNR(item, "Currently")) + columnSeparator);
             //get Buy_Price
-            itemLine.append('"' + strip(getElementTextByTagNameNR(item, "Buy_Price")) + "\",");
+            itemLine.append(strip(getElementTextByTagNameNR(item, "Buy_Price")) + columnSeparator);
             //get First_Bid
-            itemLine.append('"' + strip(getElementTextByTagNameNR(item, "First_Bid")) + "\",");
+            itemLine.append(strip(getElementTextByTagNameNR(item, "First_Bid")) + columnSeparator);
             //get Number_of_Bids
-            itemLine.append('"' + getElementTextByTagNameNR(item, "Number_of_Bids") + "\",");
+            itemLine.append(getElementTextByTagNameNR(item, "Number_of_Bids") + columnSeparator);
             //get Bids (bid s inside)
             Element bids = getElementByTagNameNR(item, "Bids");
             Element [] bidsArray = getElementsByTagNameNR(bids, "Bid");
@@ -250,19 +250,19 @@ class MyParser {
                 String bidderRating = bidder.getAttribute("Rating");
                 String bidderLocation = getElementTextByTagNameNR(bidder, "Location");
                 String bidderCountry = getElementTextByTagNameNR(bidder, "Country");
-                bidderLine.append('"' + bidderUserID + "\",");
-                bidderLine.append('"' + bidderRating + "\",");
-                bidderLine.append('"' + bidderLocation + "\",");
-                bidderLine.append('"' + bidderCountry + "\"");
+                bidderLine.append(bidderUserID + columnSeparator);
+                bidderLine.append(bidderRating + columnSeparator);
+                bidderLine.append(bidderLocation + columnSeparator);
+                bidderLine.append(bidderCountry);
 
                 bidderFile.println(bidderLine.toString() );
                 bidderFile.flush();
 
                 //bid element
-                bidLine.append('"' + bidderUserID + "\"," + '"' + itemID + "\",");
+                bidLine.append(bidderUserID + columnSeparator+ itemID + columnSeparator);
                 String bidTime = getElementTextByTagNameNR(bid, "Time");
                 String bidAmount = getElementTextByTagNameNR(bid, "Amount");
-                bidLine.append('"' + bidTime + "\"," + '"' + strip(bidAmount) + "\"");
+                bidLine.append(bidTime + columnSeparator + strip(bidAmount));
                 bidFile.println(bidLine.toString() );
                 bidFile.flush();
             }
@@ -271,35 +271,35 @@ class MyParser {
             String locationLatitude = location.getAttribute("Latitude");
             String locationLongitude = location.getAttribute("Longitude");
             String locationName = getElementText(location);
-            itemLine.append('"' + locationName + "\"," + '"' + locationLatitude + "\"," + '"' + locationLongitude + "\",");
+            itemLine.append(locationName + columnSeparator + locationLatitude + columnSeparator + locationLongitude + columnSeparator);
 
             //get country
             String country = getElementTextByTagNameNR(item, "Country");
-            itemLine.append('"' + country + "\",");
+            itemLine.append(country + columnSeparator);
 
             //get Started
             String started = getElementTextByTagNameNR(item, "Started");
-            itemLine.append('"' + formatDate(started) + "\",");
+            itemLine.append(formatDate(started) + columnSeparator);
 
             //get Ends
             String ends = getElementTextByTagNameNR(item, "Ends");
            
-            itemLine.append('"' + formatDate(ends) + "\",");
+            itemLine.append(formatDate(ends) + columnSeparator);
 
             //get Seller
             Element seller = getElementByTagNameNR(item, "Seller");
             String sellerUserID = seller.getAttribute("UserID");
             String sellerRating = seller.getAttribute("Rating");
             StringBuilder sellerLine = new StringBuilder(200);
-            System.out.println("Seller got info : rating : " + sellerRating);
-            sellerLine.append('"' + sellerUserID + "\"," + '"' + sellerRating + '"');
-            itemLine.append('"' + sellerUserID + "\",");
+            //System.out.println("Seller got info : rating : " + sellerRating);
+            sellerLine.append(sellerUserID + columnSeparator + sellerRating);
+            itemLine.append(sellerUserID + columnSeparator);
             sellerFile.println(sellerLine.toString());
             sellerFile.flush();
 
             //get Description
             String description = getElementTextByTagNameNR(item, "Description");
-            itemLine.append('"' + description + '"');
+            itemLine.append(description);
 
             itemFile.println(itemLine.toString());
             itemFile.flush();

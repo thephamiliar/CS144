@@ -179,7 +179,6 @@ class MyParser {
         Document doc = null;
         PrintWriter itemFile = null;
         PrintWriter categoryFile = null;
-        PrintWriter locationFile = null;
         PrintWriter bidFile = null;
         PrintWriter sellerFile = null;
         PrintWriter bidderFile = null;
@@ -188,7 +187,6 @@ class MyParser {
             doc = builder.parse(xmlFile);
             itemFile = new PrintWriter("items.csv");
             categoryFile = new PrintWriter("categories.csv");
-            locationFile = new PrintWriter("locations.csv");
             bidFile = new PrintWriter("bids.csv");
             sellerFile = new PrintWriter("sellers.csv");
             bidderFile = new PrintWriter("bidders.csv");
@@ -233,6 +231,8 @@ class MyParser {
             }
             //get Currently
             itemLine.append('"' + strip(getElementTextByTagNameNR(item, "Currently")) + "\",");
+            //get Buy_Price
+            itemLine.append('"' + strip(getElementTextByTagNameNR(item, "Buy_Price")) + "\",");
             //get First_Bid
             itemLine.append('"' + strip(getElementTextByTagNameNR(item, "First_Bid")) + "\",");
             //get Number_of_Bids
@@ -271,10 +271,7 @@ class MyParser {
             String locationLatitude = location.getAttribute("Latitude");
             String locationLongitude = location.getAttribute("Longitude");
             String locationName = getElementText(location);
-            StringBuilder locationLine = new StringBuilder(200);
-            locationLine.append('"' + itemID + "\"," + '"' + locationName + "\"," + '"' + locationLatitude + "\"," + '"' + locationLongitude + "\"");
-            locationFile.println(locationLine.toString());
-            locationFile.flush();
+            itemLine.append('"' + locationName + "\"," + '"' + locationLatitude + "\"," + '"' + locationLongitude + "\",");
 
             //get country
             String country = getElementTextByTagNameNR(item, "Country");
@@ -294,14 +291,18 @@ class MyParser {
             String sellerUserID = seller.getAttribute("UserID");
             String sellerRating = seller.getAttribute("Rating");
             StringBuilder sellerLine = new StringBuilder(200);
+            System.out.println("Seller got info : rating : " + sellerRating);
             sellerLine.append('"' + sellerUserID + "\"," + '"' + sellerRating + '"');
+            itemLine.append('"' + sellerUserID + "\",");
             sellerFile.println(sellerLine.toString());
+            sellerFile.flush();
 
             //get Description
             String description = getElementTextByTagNameNR(item, "Description");
             itemLine.append('"' + description + '"');
 
             itemFile.println(itemLine.toString());
+            itemFile.flush();
         }
 
         System.out.println("Item size : " + itemArray.length );

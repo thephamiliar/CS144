@@ -208,9 +208,6 @@ class MyParser {
         //System.out.println("Successfully parsed - " + xmlFile);
         
         Element items = doc.getDocumentElement();
-
-        //System.out.println("Retrieved root : " + items.getTagName());
-
         Element[] itemArray = getElementsByTagNameNR(items, "Item");
 
         int i = 0;
@@ -219,7 +216,7 @@ class MyParser {
 
             String itemID = item.getAttribute("ItemID");
             itemLine.append(itemID + columnSeparator + getElementTextByTagNameNR(item, "Name") + columnSeparator);
-            //System.out.println("Line string : " + itemLine);
+
             //get Category+
             Element[] categoryArray = getElementsByTagNameNR(item, "Category");
             for ( Element category : categoryArray){
@@ -244,7 +241,7 @@ class MyParser {
                 StringBuilder bidLine = new StringBuilder(200);
                 StringBuilder bidderLine = new StringBuilder(200);
 
-                //bidder element
+                //get Bidder
                 Element bidder = getElementByTagNameNR(bid, "Bidder");
                 String bidderUserID = bidder.getAttribute("UserID");
                 String bidderRating = bidder.getAttribute("Rating");
@@ -258,7 +255,7 @@ class MyParser {
                 bidderFile.println(bidderLine.toString() );
                 bidderFile.flush();
 
-                //bid element
+                //get Bid
                 bidLine.append(bidderUserID + columnSeparator+ itemID + columnSeparator);
                 String bidTime = getElementTextByTagNameNR(bid, "Time");
                 String bidAmount = getElementTextByTagNameNR(bid, "Amount");
@@ -291,7 +288,6 @@ class MyParser {
             String sellerUserID = seller.getAttribute("UserID");
             String sellerRating = seller.getAttribute("Rating");
             StringBuilder sellerLine = new StringBuilder(200);
-            //System.out.println("Seller got info : rating : " + sellerRating);
             sellerLine.append(sellerUserID + columnSeparator + sellerRating);
             itemLine.append(sellerUserID + columnSeparator);
             sellerFile.println(sellerLine.toString());
@@ -304,13 +300,6 @@ class MyParser {
             itemFile.println(itemLine.toString());
             itemFile.flush();
         }
-
-        System.out.println("Item size : " + itemArray.length );
-        /* Fill in code here (you will probably need to write auxiliary
-            methods). */
-        
-
-        
         
         /**************************************************************/
         

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Change permissions
+chmod a+x runLoad.sh
+
 # Run the drop.sql batch file to drop existing tables
 # Inside the drop.sql, you sould check whether the table exists. Drop them ONLY if they exists.
 mysql CS144 < drop.sql

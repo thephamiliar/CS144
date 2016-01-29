@@ -318,7 +318,7 @@ class MyParser {
         }
         
         /**************************************************************/
-        
+         System.out.println("Successfully parsed - " + xmlFile);
     }
 
     static void createUserFile() {

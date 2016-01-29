@@ -1,7 +1,5 @@
 SELECT COUNT(*)
-FROM (SELECT DISTINCT (T.UserID)
-	FROM ((SELECT UserID FROM Sellers) UNION (SELECT UserID FROM Bidders)) AS T
-) AS T2;
+FROM Users;
 
 SELECT COUNT(*)
 FROM Items
@@ -25,12 +23,12 @@ AND Ends > '2001-12-20 00:00:01'
 AND Number_of_Bids > 0;
 
 SELECT COUNT(*)
-FROM Sellers
-WHERE Rating > 1000;
+FROM Users
+WHERE SellerRating > 1000;
 
 SELECT COUNT(*)
-FROM Sellers
-INNER JOIN Bidders ON Sellers.UserID = Bidders.UserID;
+FROM Users
+WHERE SellerRating IS NOT NULL AND BidderRating IS NOT NULL;
 
 SELECT COUNT(*)
 FROM (SELECT DISTINCT Category

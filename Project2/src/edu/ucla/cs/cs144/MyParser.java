@@ -40,11 +40,21 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ErrorHandler;
 
+// User "struct"
+class User {
+   public String userID = null;
+   public String sellerRating = "\\N";
+   public String bidderRating = "\\N";
+   public String location = null;
+   public String country = null;
+}
 
 class MyParser {
-    
     static final String columnSeparator = "|*|";
     static DocumentBuilder builder;
+
+    // user hash map to accumulate users
+    static HashMap<String,User> userMap = new HashMap<String,User>();
     
     static final String[] typeName = {
 	"none",
@@ -180,17 +190,12 @@ class MyParser {
         PrintWriter itemFile = null;
         PrintWriter categoryFile = null;
         PrintWriter bidFile = null;
-        PrintWriter sellerFile = null;
-        PrintWriter bidderFile = null;
         
         try {
             doc = builder.parse(xmlFile);
             itemFile = new PrintWriter(new FileWriter("items.csv", true));
             categoryFile = new PrintWriter(new FileWriter("categories.csv", true));
             bidFile = new PrintWriter(new FileWriter("bids.csv", true));
-            sellerFile = new PrintWriter(new FileWriter("sellers.csv", true));
-            bidderFile = new PrintWriter(new FileWriter("bidders.csv", true));
-               
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -204,9 +209,7 @@ class MyParser {
         }
         
         /* At this point 'doc' contains a DOM representation of an 'Items' XML
-         * file. Use doc.getDocumentElement() to get the root Element. */
-        //System.out.println("Successfully parsed - " + xmlFile);
-        
+         * file. Use doc.getDocumentElement() to get the root Element. */        
         Element items = doc.getDocumentElement();
         Element[] itemArray = getElementsByTagNameNR(items, "Item");
 
@@ -247,13 +250,19 @@ class MyParser {
                 String bidderRating = bidder.getAttribute("Rating");
                 String bidderLocation = getElementTextByTagNameNR(bidder, "Location");
                 String bidderCountry = getElementTextByTagNameNR(bidder, "Country");
-                bidderLine.append(bidderUserID + columnSeparator);
-                bidderLine.append(bidderRating + columnSeparator);
-                bidderLine.append(bidderLocation + columnSeparator);
-                bidderLine.append(bidderCountry);
-
-                bidderFile.println(bidderLine.toString() );
-                bidderFile.flush();
+                if (userMap.containsKey(bidderUserID)) {
+                    User oldUser = userMap.get(bidderUserID);
+                    oldUser.bidderRating = bidderRating;
+                    oldUser.location = bidderLocation;
+                    oldUser.country = bidderCountry;
+                } else {
+                    User newUser = new User();
+                    newUser.userID = bidderUserID;
+                    newUser.bidderRating = bidderRating;
+                    newUser.location = bidderLocation;
+                    newUser.country = bidderCountry;
+                    userMap.put(bidderUserID, newUser);
+                }
 
                 //get Bid
                 bidLine.append(bidderUserID + columnSeparator+ itemID + columnSeparator);
@@ -263,6 +272,7 @@ class MyParser {
                 bidFile.println(bidLine.toString() );
                 bidFile.flush();
             }
+
             //get Location
             Element location = getElementByTagNameNR(item, "Location");
             String locationLatitude = location.getAttribute("Latitude");
@@ -288,10 +298,16 @@ class MyParser {
             String sellerUserID = seller.getAttribute("UserID");
             String sellerRating = seller.getAttribute("Rating");
             StringBuilder sellerLine = new StringBuilder(200);
-            sellerLine.append(sellerUserID + columnSeparator + sellerRating);
+            if (userMap.containsKey(sellerUserID)) {
+                User oldUser = userMap.get(sellerUserID);
+                oldUser.sellerRating = sellerRating;
+            } else {
+                User newUser = new User();
+                newUser.userID = sellerUserID;
+                newUser.sellerRating = sellerRating;
+                userMap.put(sellerUserID, newUser);
+            }
             itemLine.append(sellerUserID + columnSeparator);
-            sellerFile.println(sellerLine.toString());
-            sellerFile.flush();
 
             //get Description
             String description = getElementTextByTagNameNR(item, "Description");
@@ -303,6 +319,27 @@ class MyParser {
         
         /**************************************************************/
         
+    }
+
+    static void createUserFile() {
+        PrintWriter userFile = null;
+        try {
+            userFile = new PrintWriter(new FileWriter("users.csv", true));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(3);
+        }
+
+        for (User user : userMap.values()) {
+            StringBuilder userLine = new StringBuilder(200);
+            userLine.append(user.userID + columnSeparator);
+            userLine.append(user.bidderRating + columnSeparator);
+            userLine.append(user.sellerRating + columnSeparator);
+            userLine.append(user.location + columnSeparator);
+            userLine.append(user.country);
+            userFile.println(userLine.toString());
+            userFile.flush();
+        }
     }
     
     public static void main (String[] args) {
@@ -333,5 +370,8 @@ class MyParser {
             File currentFile = new File(args[i]);
             processFile(currentFile);
         }
+
+        // print out users.csv file
+        createUserFile();
     }
 }

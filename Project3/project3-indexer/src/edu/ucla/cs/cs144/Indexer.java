@@ -31,7 +31,7 @@ public class Indexer {
     private IndexWriter indexWriter = null;
     public IndexWriter getIndexWriter(boolean create) throws IOException {
         if (indexWriter == null) {
-            Directory indexDir = FSDirectory.open(new File("index-directory"));
+            Directory indexDir = FSDirectory.open(new File("/var/lib/lucene"));
             IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_2, new StandardAnalyzer());
             indexWriter = new IndexWriter(indexDir, config);
         }
@@ -45,7 +45,6 @@ public class Indexer {
    }
 
    public void indexItem(Item item) throws IOException {
-        System.out.println("Indexing item: " + item);
         IndexWriter writer = getIndexWriter(false);
         Document doc = new Document();
         doc.add(new StringField("id", Integer.toString(item.itemId), Field.Store.YES));
@@ -76,15 +75,22 @@ public class Indexer {
              * and place your class source files at src/edu/ucla/cs/cs144/.
     	 * 
     	 */
-        // Erase existing index
-        getIndexWriter(true);
-        // Index all Accommodation entries
-        Item[] items = DbManager.getItems();
-        for(Item item : items) {
-            indexItem(item);              
+        try {
+            // Erase existing index
+            getIndexWriter(true);
+            // Index all Accommodation entries
+            Item[] items = DbManager.getItems();
+            System.out.println(items.length);
+            for(Item item : items) {
+                System.out.println(item.categories);
+                indexItem(item);              
+            }
+            // Don't forget to close the index writer when done
+            closeIndexWriter();
         }
-        // Don't forget to close the index writer when done
-        closeIndexWriter();
+        catch (Exception e){
+            System.out.println("error");
+        }
     }    
 
     public static void main(String args[]) {

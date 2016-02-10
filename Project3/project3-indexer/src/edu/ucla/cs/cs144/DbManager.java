@@ -30,16 +30,24 @@ public class DbManager {
 			Connection conn = getConnection(true);
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Items");
-			System.out.println("hello");
 			List<Item> items = new ArrayList<Item>();
 			while(rs.next()){ 
 				int itemId = rs.getInt("ItemID");
 				String description = rs.getString("Description");
-				System.out.println("Got ItemID . . ." + itemId);
-				System.out.println(description);
+				String name = rs.getString("Name");
+
+				PreparedStatement categoryStatement = conn.prepareStatement( "SELECT * FROM Categories WHERE ItemID = ?");
+				categoryStatement.setInt(1, itemId);
+				ResultSet crs = categoryStatement.executeQuery();
+				StringBuilder categories = new StringBuilder();
+				while(crs.next() ){
+					categories.append(" " + crs.getString("Category"));
+				}
+				Item item = new Item(itemId, name, categories.toString(), description);
+				items.add(item);
 			}
 			conn.close();
-			return null;
+			return items.toArray(new Item[items.size()]);
 		}
 		catch (Exception e){
 			System.out.println("Error encountered");

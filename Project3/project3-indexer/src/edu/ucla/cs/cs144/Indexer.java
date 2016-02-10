@@ -71,5 +71,7 @@ public class Indexer {
     public static void main(String args[]) {
         Indexer idx = new Indexer();
         idx.rebuildIndexes();
+        System.out.println("ello");
+        DbManager.getItems();
     }   
 }

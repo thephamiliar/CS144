@@ -6,12 +6,13 @@ public class Item{
 
 	public int itemId;
 	public String name;
-	public List<String> categories;
+	public String categories;
 	public String description;
 
-	public Item(int itemId, String name, String description){
+	public Item(int itemId, String name, String categories, String description){
+		this.itemId = itemId;
 		this.name = name;
-		categories = new ArrayList<String>();
+		this.categories = categories;
 		this.description = description;
 	}
 }

@@ -39,12 +39,11 @@ public class DbManager {
 				PreparedStatement categoryStatement = conn.prepareStatement( "SELECT * FROM Categories WHERE ItemID = ?");
 				categoryStatement.setInt(1, itemId);
 				ResultSet crs = categoryStatement.executeQuery();
-				List<String> categories = new ArrayList<>();
+				StringBuilder categories = new StringBuilder();
 				while(crs.next() ){
-					categories.add(crs.getString("Category"));
+					categories.append(" " + crs.getString("Category"));
 				}
-				Item item = new Item(itemId, name, description);
-				item.categories = categories;
+				Item item = new Item(itemId, name, categories.toString(), description);
 				items.add(item);
 			}
 			conn.close();

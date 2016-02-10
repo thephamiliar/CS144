@@ -44,15 +44,15 @@ public class Indexer {
         }
    }
 
-   public void indexHotel(Item item) throws IOException {
+   public void indexItem(Item item) throws IOException {
         System.out.println("Indexing item: " + item);
         IndexWriter writer = getIndexWriter(false);
         Document doc = new Document();
-        doc.add(new StringField("id", item.id, Field.Store.YES));
+        doc.add(new StringField("id", Integer.toString(item.itemId), Field.Store.YES));
         doc.add(new StringField("name", item.name, Field.Store.YES));
         doc.add(new StringField("categories", item.categories, Field.Store.YES));
         doc.add(new StringField("description", item.description, Field.Store.YES));
-        String fullSearchableText = item.id + " " + item.name + " " + item.categories + " " + item.description;
+        String fullSearchableText = item.itemId + " " + item.name + " " + item.categories + " " + item.description;
         doc.add(new TextField("content", fullSearchableText, Field.Store.NO));
         writer.addDocument(doc);
     } 
@@ -79,7 +79,7 @@ public class Indexer {
         // Erase existing index
         getIndexWriter(true);
         // Index all Accommodation entries
-        Item[] items = DbManager.getItemss();
+        Item[] items = DbManager.getItems();
         for(Item item : items) {
             indexItem(item);              
         }
@@ -90,7 +90,6 @@ public class Indexer {
     public static void main(String args[]) {
         Indexer idx = new Indexer();
         idx.rebuildIndexes();
-        System.out.println("ello");
         DbManager.getItems();
     }   
 }

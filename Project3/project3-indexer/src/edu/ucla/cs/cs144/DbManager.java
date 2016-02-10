@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbManager {
-        static private String databaseURL = "jdbc:mysql://localhost:3306/";
-        static private String dbname = "CS144";
-        static private String username = "cs144";
-        static private String password = "";
+    static private String databaseURL = "jdbc:mysql://localhost:3306/";
+    static private String dbname = "CS144";
+    static private String username = "cs144";
+    static private String password = "";
 	
 	/**
 	 * Opens a database connection
@@ -17,15 +17,15 @@ public class DbManager {
 	 * @return An open java.sql.Connection
 	 * @throws SQLException
 	 */
-	public static Connection getConnection(boolean readOnly)
-	throws SQLException {        
-            Connection conn = DriverManager.getConnection(
-                databaseURL + dbname, username, password);
-            conn.setReadOnly(readOnly);        
-            return conn;
-        }
+	public static Connection getConnection(boolean readOnly) throws SQLException {        
+        Connection conn = DriverManager.getConnection(databaseURL + dbname, username, password);
+        conn.setReadOnly(readOnly);        
+        return conn;
+    }
 	
-	private DbManager() {}
+	private DbManager() {
+
+	}
 	
 	static {
 		try {

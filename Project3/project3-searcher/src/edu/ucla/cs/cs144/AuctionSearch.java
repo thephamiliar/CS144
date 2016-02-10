@@ -34,6 +34,14 @@ import edu.ucla.cs.cs144.SearchRegion;
 import edu.ucla.cs.cs144.SearchResult;
 
 public class AuctionSearch implements IAuctionSearch {
+    private IndexSearcher searcher = null;
+    private QueryParser parser = null;
+    
+    /** Creates a new instance of SearchEngine */
+    public AuctionSearch() throws IOException {
+        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory"))));
+        parser = new QueryParser("content", new StandardAnalyzer());
+    }
 
 	/* 
          * You will probably have to use JDBC to access MySQL data
@@ -50,10 +58,31 @@ public class AuctionSearch implements IAuctionSearch {
          *
          */
 	
-	public SearchResult[] basicSearch(String query, int numResultsToSkip, 
-			int numResultsToReturn) {
-		// TODO: Your code here!
-		return new SearchResult[0];
+	public SearchResult[] basicSearch(String query, int numResultsToSkip, int numResultsToReturn)
+		throws IOException, ParseException {
+
+		Query query = parser.parse(queryString);  
+		TopDocs topDocs;
+		if (numResultsToSkip) {
+			topDocs = searcher.search(query, numResultsToSkip);
+			topDocs = searcher.searchAfter(topDocs.getMaxScore(), query, numResultsToReturn);
+		} else {
+			topDocs = searcher.search(query, numResultsToReturn);
+		}
+
+		// obtain the ScoreDoc (= documentID, relevanceScore) array from topDocs
+		ScoreDoc[] hits = topDocs.scoreDocs;
+
+		// retrieve each matching document from the ScoreDoc arry
+		SearchResult[] results = new SearchResult[hits.length];
+		for (int i = 0; i < hits.length; i++) {
+		    Document doc = instance.getDocument(hits[i].doc);
+		    String itemId = doc.get("id");
+		    String itemName = doc.get("name");
+		    SearchResult item = new SearchResult(itemId, itemName);
+		    results[i] = item;
+		}
+		return results;
 	}
 
 	public SearchResult[] spatialSearch(String query, SearchRegion region,

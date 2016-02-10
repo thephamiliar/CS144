@@ -61,6 +61,7 @@ echo "DROP DATABASE IF EXISTS CS144; CREATE DATABASE CS144;" | mysql -uroot -ppa
 
 # parse the XML data and run the load script
 echo "Running your runLoad.sh script..."
+chmod +x runLoad.sh
 ./runLoad.sh
 
 # run the queries

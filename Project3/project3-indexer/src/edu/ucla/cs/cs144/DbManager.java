@@ -1,8 +1,8 @@
 package edu.ucla.cs.cs144;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+
+import java.util.*;
 
 public class DbManager {
     static private String databaseURL = "jdbc:mysql://localhost:3306/";
@@ -22,9 +22,29 @@ public class DbManager {
         conn.setReadOnly(readOnly);        
         return conn;
     }
-	
-	private DbManager() {
 
+	private DbManager() {}
+
+	public static Item[] getItems(){
+		try {
+			Connection conn = getConnection(true);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Items");
+			System.out.println("hello");
+			List<Item> items = new ArrayList<Item>();
+			while(rs.next()){ 
+				int itemId = rs.getInt("ItemID");
+				String description = rs.getString("Description");
+				System.out.println("Got ItemID . . ." + itemId);
+				System.out.println(description);
+			}
+			conn.close();
+			return null;
+		}
+		catch (Exception e){
+			System.out.println("Error encountered");
+		}
+		return null;
 	}
 	
 	static {

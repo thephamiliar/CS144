@@ -38,9 +38,22 @@ public class AuctionSearch implements IAuctionSearch {
     private QueryParser parser = null;
     
     /** Creates a new instance of SearchEngine */
-    public AuctionSearch() throws IOException {
-        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory"))));
-        parser = new QueryParser("content", new StandardAnalyzer());
+    public AuctionSearch() {
+    	try {
+	        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("/var/lib/lucene"))));
+	        parser = new QueryParser("content", new StandardAnalyzer());
+    	} catch (Exception e) {
+    		System.out.println(e);
+    	}
+    }
+
+    public Document getDocument(int docId) {
+    	try {
+        	return searcher.doc(docId);
+    	} catch (Exception e) {
+			System.out.println(e);
+    	}
+    	return null;
     }
 
 	/* 
@@ -58,25 +71,29 @@ public class AuctionSearch implements IAuctionSearch {
          *
          */
 	
-	public SearchResult[] basicSearch(String query, int numResultsToSkip, int numResultsToReturn)
-		throws IOException, ParseException {
-
-		Query query = parser.parse(queryString);  
-		TopDocs topDocs;
-		if (numResultsToSkip) {
-			topDocs = searcher.search(query, numResultsToSkip);
-			topDocs = searcher.searchAfter(topDocs.getMaxScore(), query, numResultsToReturn);
-		} else {
-			topDocs = searcher.search(query, numResultsToReturn);
+	public SearchResult[] basicSearch(String query, int numResultsToSkip, int numResultsToReturn) {
+		TopDocs topDocs = null;
+		ScoreDoc[] hits;
+		try {
+			Query q = parser.parse(query);  
+			if (numResultsToSkip > 0) {
+				topDocs = searcher.search(q, numResultsToSkip);
+				hits = topDocs.scoreDocs;
+				topDocs = searcher.searchAfter(hits[numResultsToSkip], q, numResultsToReturn);
+			} else {
+				topDocs = searcher.search(q, numResultsToReturn);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 
-		// obtain the ScoreDoc (= documentID, relevanceScore) array from topDocs
-		ScoreDoc[] hits = topDocs.scoreDocs;
 
+		// obtain the ScoreDoc (= documentID, relevanceScore) array from topDocs
+		hits = topDocs.scoreDocs;
 		// retrieve each matching document from the ScoreDoc arry
 		SearchResult[] results = new SearchResult[hits.length];
 		for (int i = 0; i < hits.length; i++) {
-		    Document doc = instance.getDocument(hits[i].doc);
+		    Document doc = getDocument(hits[i].doc);
 		    String itemId = doc.get("id");
 		    String itemName = doc.get("name");
 		    SearchResult item = new SearchResult(itemId, itemName);

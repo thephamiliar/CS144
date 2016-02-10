@@ -82,7 +82,6 @@ public class Indexer {
             Item[] items = DbManager.getItems();
             System.out.println(items.length);
             for(Item item : items) {
-                System.out.println(item.categories);
                 indexItem(item);              
             }
             // Don't forget to close the index writer when done

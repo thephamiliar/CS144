@@ -36,6 +36,8 @@ import edu.ucla.cs.cs144.SearchResult;
 public class AuctionSearch implements IAuctionSearch {
     private IndexSearcher searcher = null;
     private QueryParser parser = null;
+    static final String OLD_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    static final String NEW_FORMAT = "MMM-dd-yy HH:mm:ss";
     
     /** Creates a new instance of SearchEngine */
     public AuctionSearch() {
@@ -105,13 +107,68 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
+
 		return new SearchResult[0];
 	}
 
 	public String getXMLDataForItemId(String itemId) {
 		// TODO: Your code here!
-		return "";
+		// retrieve Item Info
+		Item item = DbManager.getItem(Integer.parseInt(itemId));
+		StringBuilder xml = new StringBuilder();
+		if (item != null) {
+			xml.append("<Item ItemID=" + '"' + itemId + '"' + '>');
+			xml.append("<Name>" + item.name + "</Name>");
+
+
+			// retrieve categories categories!
+			ArrayList<String> categories = DbManager.getCategories(itemId);
+			for (String category : categories) {
+				xml.append("<Category>" + category + "</Category>");
+			}
+
+			xml.append("<Currently>$" + item.currently + "</Currently>");
+			xml.append("<Buy_Price>$" + item.buyPrice + "</Buy_Price>");
+			xml.append("<First_Bid>$" + item.firstBid + "</First_Bid>");
+			xml.append("<Number_of_Bids>" + item.numBids + "</Number_of_Bids>");
+
+			xml.append("<Bids>");
+			// get bids
+			for (Bid bid : item.bids) {
+				xml.append("<Bid>");
+				xml.append("<Bidder Rating=" + bid.rating + "UserID=" + bid.userId + ">");
+				xml.append("<Location>" + bid.location +"</Location>");
+				xml.append("<Country>" + bid.country +"</Country>");
+				xml.append("</Bidder>");
+				xml.append("<Time>" + bid.time + "</Time>");
+				xml.append("<Amount>$" + bid.amount + "</Amount>");
+				xml.append("</Bid>");
+			}
+			xml.append("</Bids>");
+
+			xml.append("<Location " + item.latitude + item.longitude + item.location + "</Location>");
+			xml.append("<Started>" + formatDate(item.started) + "</Started>");
+			xml.append("<Ends>" + formatDate(item.ends) +"</Ends>");
+			xml.append("<Seller" + item.sellerRating + item.sellerId + "/>");
+			xml.append("<Description>" + item.description +"</Description>");
+
+			xml.append("</Item>");
+		}
+
+		return xml.toString();
 	}
+
+	static String formatDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(OLD_FORMAT);
+        try {
+            Date date = dateFormat.parse(dateString);
+            dateFormat.applyPattern(NEW_FORMAT);
+            dateString = dateFormat.format(date); 
+        } catch (Exception e) {
+                
+            }
+        return dateString;
+    }
 	
 	public String echo(String message) {
 		return message;

@@ -138,40 +138,49 @@ public class AuctionSearch implements IAuctionSearch {
 		Item item = DbManager.getItem(Integer.parseInt(itemId));
 		StringBuilder xml = new StringBuilder();
 		if (item != null) {
-			xml.append("<Item ItemID=" + '"' + itemId + '"' + '>');
-			xml.append("<Name>" + item.name + "</Name>");
+			xml.append("<Item ItemID=\"" + itemId + "\">");
+			xml.append("<Name>" + escapeXMLChars(item.name) + "</Name>");
 
 
 			// retrieve categories categories!
 			ArrayList<String> categories = DbManager.getCategories(itemId);
 			for (String category : categories) {
-				xml.append("<Category>" + category + "</Category>");
+				xml.append("<Category>" + escapeXMLChars(category) + "</Category>");
 			}
 
 			xml.append("<Currently>$" + item.currently + "</Currently>");
-			xml.append("<Buy_Price>$" + item.buyPrice + "</Buy_Price>");
-			xml.append("<First_Bid>$" + item.firstBid + "</First_Bid>");
-			xml.append("<Number_of_Bids>" + item.numBids + "</Number_of_Bids>");
-
-			xml.append("<Bids>");
-			// get bids
-			for (Bid bid : item.bids) {
-				xml.append("<Bid>");
-				xml.append("<Bidder Rating=" + bid.rating + "UserID=" + bid.userId + ">");
-				xml.append("<Location>" + bid.location +"</Location>");
-				xml.append("<Country>" + bid.country +"</Country>");
-				xml.append("</Bidder>");
-				xml.append("<Time>" + bid.time + "</Time>");
-				xml.append("<Amount>$" + bid.amount + "</Amount>");
-				xml.append("</Bid>");
+			if (item.buyPrice > 0) {
+				xml.append("<Buy_Price>$" + item.buyPrice + "</Buy_Price>");
 			}
-			xml.append("</Bids>");
 
-			xml.append("<Location " + item.latitude + item.longitude + item.location + "</Location>");
+			xml.append("<First_Bid>$" + item.firstBid + "</First_Bid>");
+			xml.append("<Number_of_Bids>" + Integer.toString(item.numBids) + "</Number_of_Bids>");
+
+			// get bids
+			if (item.numBids > 0) {
+				xml.append("<Bids>");
+				for (Bid bid : item.bids) {
+					xml.append("<Bid>");
+					xml.append("<Bidder Rating=\"" + bid.rating + "\" UserID=\"" + bid.userId + "\">");
+					xml.append("<Location>" + escapeXMLChars(bid.location) +"</Location>");
+					xml.append("<Country>" + escapeXMLChars(bid.country) +"</Country>");
+					xml.append("</Bidder>");
+					xml.append("<Time>" + bid.time + "</Time>");
+					xml.append("<Amount>$" + bid.amount + "</Amount>");
+					xml.append("</Bid>");
+				}
+				xml.append("</Bids>");
+			} else {
+				xml.append("<Bids/>");
+			}
+
+
+			xml.append("<Location Latitude=\"" + item.latitude + "\" Longitude=\"" + item.longitude + "\">" + escapeXMLChars(item.location) + "</Location>");
+			xml.append("<Country>" + item.country + "</Country>");
 			xml.append("<Started>" + formatDate(item.started) + "</Started>");
 			xml.append("<Ends>" + formatDate(item.ends) +"</Ends>");
-			xml.append("<Seller" + item.sellerRating + item.sellerId + "/>");
-			xml.append("<Description>" + item.description +"</Description>");
+			xml.append("<Seller Rating=\"" + item.sellerRating + "\" UserID=\"" + item.sellerId + "\"/>");
+			xml.append("<Description>" + escapeXMLChars(item.description) +"</Description>");
 
 			xml.append("</Item>");
 		}
@@ -190,6 +199,38 @@ public class AuctionSearch implements IAuctionSearch {
             }
         return dateString;
     }
+
+   static String escapeXMLChars(String input) {
+      if (input == null) {
+         return null;
+      }
+      
+      StringBuilder output = new StringBuilder();
+      for (int i = 0; i < input.length(); i++) {
+      	 char ch = input.charAt(i);
+         switch (ch) {
+         case '<':
+            output.append("&lt;");
+            break;
+         case '>':
+            output.append("&gt;");
+            break;
+         case '&':
+            output.append("&amp;");
+            break;
+         case '\"':
+            output.append("&quot;");
+            break;
+         case '\'':
+            output.append("&apos;");
+            break;
+         default:
+            output.append(ch);
+            break;
+         }
+      }
+      return output.toString();
+   }
 	
 	public String echo(String message) {
 		return message;

@@ -87,7 +87,7 @@ public class DbManager {
 				PreparedStatement bidsStatement = conn.prepareStatement( "SELECT * FROM Bids WHERE ItemID = ?");
 				bidsStatement.setInt(1, itemId);
 				ResultSet brs = bidsStatement.executeQuery();
-				List<Bid> bids = new ArrayList<Bid>();
+				ArrayList<Bid> bids = new ArrayList<Bid>();
 				while (brs.next()) {
 					Bid bid = new Bid();
 					bid.time = brs.getDate("Time").toString();
@@ -110,8 +110,9 @@ public class DbManager {
 				item.location = rs.getString("LocationName");
 				item.latitude = rs.getFloat("Latitude");
 				item.longitude = rs.getFloat("Longitude");
-				item.started = rs.getDate("Started").toString();
-				item.ends = rs.getDate("Ends").toString();
+				item.country = rs.getString("Country");
+				item.started = rs.getTimestamp("Started").toString();
+				item.ends = rs.getTimestamp("Ends").toString();
 				item.sellerId = rs.getString("SellerID");
 
 				PreparedStatement sellerStatement = conn.prepareStatement( "SELECT * FROM Users WHERE UserID = ?");

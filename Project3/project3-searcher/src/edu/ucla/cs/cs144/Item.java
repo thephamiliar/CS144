@@ -10,11 +10,12 @@ public class Item {
 	public float currently;
 	public float buyPrice;
 	public float firstBid;
-	public float numBids;
-	public List<Bid> bids;
+	public int numBids;
+	public ArrayList<Bid> bids;
 	public String location;
 	public float latitude;
 	public float longitude;
+	public String country;
 	public String started;
 	public String ends;
 	public int sellerRating;

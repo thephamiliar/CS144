@@ -54,7 +54,9 @@ public class DbManager {
 		}
 		return null;
 	}
-	
+	//1          2
+	//
+	//3          4
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();

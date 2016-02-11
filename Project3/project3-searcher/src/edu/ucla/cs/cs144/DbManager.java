@@ -27,6 +27,39 @@ public class DbManager {
 	
 	private DbManager() {}
 
+
+	public static int[] spatialItems(SearchRegion sr){
+
+		try {
+			Connection conn = getConnection(true);
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM SpatialTable WHERE Latitude > ? AND Latitude < ? AND Longitude > ? AND Longitude < ?");
+			stmt.setDouble(1,sr.getLx());
+			stmt.setDouble(2,sr.getRx());
+			stmt.setDouble(3,sr.getLy());
+			stmt.setDouble(4,sr.getRy());
+			ResultSet rs = stmt.executeQuery();
+			List<Integer> itemIds = new ArrayList<>();
+			while(rs.next()){ 
+				int itemId = rs.getInt("ItemID");
+				itemIds.add(itemId);
+			}
+			System.out.println("Total valid outputs (Spatial Search) : " + itemIds.size());
+			conn.close();
+
+			int[] intArray = new int[itemIds.size()];
+			int count = 0;
+			for (Integer i : itemIds){
+				intArray[count++] = i.intValue();
+			}
+     		return intArray;
+     	}
+     	catch (Exception e){
+     		System.out.println("Spatial index error" + e);
+     	}
+     	return null;
+	}
+
+
 	public static Item getItem(int itemId) {
 		Item item = null;
 		try {

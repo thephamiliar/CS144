@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import java.text.SimpleDateFormat;
 
 import java.sql.Connection;
@@ -107,8 +108,28 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
-
-		return new SearchResult[0];
+		int[] spatialResults = DbManager.spatialItems(region);
+		SearchResult[] baseResults = basicSearch(query, 0, Integer.MAX_VALUE);
+		System.out.println("base result" + baseResults.length);
+		System.out.println("spatial result" + spatialResults.length);
+		int tail = 0;
+		for(int i = 0; i < baseResults.length; i++){
+			boolean foundMatch = false;
+			for(int j = 0; j < spatialResults.length; j++){
+				if(Integer.parseInt(baseResults[i].getItemId()) == spatialResults[j]){
+					foundMatch = true;
+					break;
+				}
+			}
+			if(foundMatch){
+				baseResults[tail++] = baseResults[i];
+			}
+		}
+		int endIndex = numResultsToSkip + numResultsToReturn;
+		System.out.println("tail size " + tail);
+		if (tail < numResultsToSkip + numResultsToReturn)
+			endIndex = tail;
+		return Arrays.copyOfRange(baseResults, numResultsToSkip, endIndex);
 	}
 
 	public String getXMLDataForItemId(String itemId) {

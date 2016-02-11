@@ -110,8 +110,6 @@ public class AuctionSearch implements IAuctionSearch {
 		// TODO: Your code here!
 		int[] spatialResults = DbManager.spatialItems(region);
 		SearchResult[] baseResults = basicSearch(query, 0, Integer.MAX_VALUE);
-		System.out.println("base result" + baseResults.length);
-		System.out.println("spatial result" + spatialResults.length);
 		int tail = 0;
 		for(int i = 0; i < baseResults.length; i++){
 			boolean foundMatch = false;
@@ -126,7 +124,6 @@ public class AuctionSearch implements IAuctionSearch {
 			}
 		}
 		int endIndex = numResultsToSkip + numResultsToReturn;
-		System.out.println("tail size " + tail);
 		if (tail < numResultsToSkip + numResultsToReturn)
 			endIndex = tail;
 		return Arrays.copyOfRange(baseResults, numResultsToSkip, endIndex);

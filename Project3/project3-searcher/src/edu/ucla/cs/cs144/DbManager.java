@@ -43,7 +43,6 @@ public class DbManager {
 				int itemId = rs.getInt("ItemID");
 				itemIds.add(itemId);
 			}
-			System.out.println("Total valid outputs (Spatial Search) : " + itemIds.size());
 			conn.close();
 
 			int[] intArray = new int[itemIds.size()];

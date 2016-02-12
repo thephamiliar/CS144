@@ -49,9 +49,6 @@ public class Indexer {
         IndexWriter writer = getIndexWriter(false);
         Document doc = new Document();
         doc.add(new StringField("id", Integer.toString(item.itemId), Field.Store.YES));
-        doc.add(new StringField("name", item.name, Field.Store.YES));
-        doc.add(new StringField("categories", item.categories, Field.Store.YES));
-        doc.add(new StringField("description", item.description, Field.Store.YES));
         String fullSearchableText = item.itemId + " " + item.name + " " + item.categories + " " + item.description;
         doc.add(new TextField("content", fullSearchableText, Field.Store.NO));
         writer.addDocument(doc);

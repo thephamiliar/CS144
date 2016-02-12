@@ -1,2 +1,1 @@
-Our index is built just on ItemID, because ItemID is the primary key, thus just indexing the ItemID is enough to
-organize the entire database.
+Our index is built just on ItemID and the item’s name, because these are the terms we want to look up quickly to output in our search results. For the keywords in the inverted index, we concatenated the item’s name, categories, and description as these are where we want to search for keywords.

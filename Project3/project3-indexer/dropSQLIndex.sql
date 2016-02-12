@@ -1,2 +1,2 @@
-DROP INDEX sp_index ON SpatialTable;
-DROP TABLE SpatialTable;
+-- index is dropped when table is dropped
+DROP TABLE IF EXISTS SpatialTable;

@@ -13,12 +13,12 @@ import edu.ucla.cs.cs144.SearchResult;
 public class AuctionSearchClient {
 	
 	private static final String ENDPOINT_URL =
-		"http://localhost:8080/axis2/services/AuctionSearchService";
+		"http://oak.cs.ucla.edu/axis2/services/AuctionSearchService";
 	private static final String TARGET_NAMESPACE =
 		"http://cs144.cs.ucla.edu";
 	
 	@SuppressWarnings("unused")
-	public static SearchResult[] basicSearch(String query, int numResultsToSkip, 
+	public static SearchResult[] basicSearch(String query, int numResultsToSkip, 	
 			int numResultsToReturn) {
 		try {
 			RPCServiceClient rpcClient = new RPCServiceClient();

@@ -75,8 +75,8 @@ div.suggestions {
 	display: inline-block;
 }
 
-table {
-	width: 100%;
+td {
+	width: 300px;
 }
 
 hr {
@@ -107,7 +107,7 @@ hr {
 
 .bidderRating {
 	position: absolute;
-	right: 50%;
+	right: 45%;
 }
 
 .userInfo {

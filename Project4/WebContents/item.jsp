@@ -1,12 +1,16 @@
-<%@ page import="edu.ucla.cs.cs144.*" %>
+<!--- <%@ page import="edu.ucla.cs.cs144.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Custom CSS -->
+    <link href="css/menu.css" rel="stylesheet">
 	<script src="item.js"></script>  
 	<script type="text/javascript" 
 	    src="http://maps.google.com/maps/api/js?sensor=false"> 
@@ -16,26 +20,162 @@
 </head>
 
 <body onload="init()">
-    <div style="text-align: center;">
+<!--
+	<% out.println("<div id=\"latitude\" data-latitude=\"" + item.latitude + "\">" + item.latitude + "</div>"); %>
+	<% out.println("<div id=\"longitude\" data-longitude=\"" + item.longitude + "\">" + item.longitude + "</div>"); %> -->
+	<div id="header">
+		<div class="userInfo">
+			<div class="glyphicon glyphicon-user"></div>
+			<p>solapower613</p>
+		</div>
+		<div id="headerInfo">
+			<h2 id="itemName">
+				Superman
+				<!--<%Item item = (Item) request.getAttribute("message");
+					out.println(item.name);
+					//out.println(request.getAttribute("xml"));
+				%>-->
+			</h2>
+			<p id="location">
+				Tokyo, Japan
+				<!-- 	<% out.println("<div id=\"location\" data-location=\"" + item.location + "," + item.country + "\">" + item.location + "," + item.country + "</div>"); %> -->
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star-empty"></span>
+				<span class="glyphicon glyphicon-star-empty"></span>
+			</p>
+		</div>
+	</div>
+
+	<div id="content-wrapper">
+		<div id="content">
+			<b style="font-size: 1.25em;">About Item (#)</b>
+			<div id="description">
+				<p>5-Minute walk to BruinBus UCLA shuttle (or a 25-minutes walk to campus). This is a big room in a clean and nice apartment with private bathroom. It's walking distance from grocery stores (Bristol Farms, Sprouts) and many restaurants in Westwood area.</p>
+			</div>
+			<hr>
+			<div>
+				<div class="infoType">
+					Categories
+				</div>
+				<div class="info">
+					 <table>
+						<tr>
+							<td>Kitchenware</td>
+							<td>Toys</td>
+						</tr>
+						<tr>
+							<td>Decorations</td>
+							<td>Movies</td>
+						</tr>
+					</table> 
+				</div>
+			</div>
+			<hr>
+			<div>
+				<div class="infoType">
+					Prices
+				</div>
+				<div class="info">
+					 <table>
+						<tr>
+							<td>Buy Price: </td>
+							<td>Currently: </td>
+						</tr>
+						<tr>
+							<td>First Bid: </td>
+						</tr>
+					</table> 
+				</div>
+			</div>
+			<hr>
+			<div>
+				<div class="infoType">
+					Availability
+				</div>
+				<div class="info">
+					 <table>
+						<tr>
+							<td>Started: </td>
+							<td>Ends: </td>
+						</tr>
+					</table> 
+				</div>
+			</div>
+			<hr>
+			<div>
+				<div class="infoType">
+					Location
+				</div>
+				<div class="info">
+					 <table>
+						<tr>
+							<td>Latitude: </td>
+							<td>Longitude: </td>
+						</tr>
+						<tr>
+							<td>Location</td>
+						</tr>
+					</table> 
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="bid-wrapper">
+		<div id="bids">
+			<b style="font-size: 1.25em;">7 Bids</b>
+			<hr>
+			<div class="userInfo">
+				<div class="glyphicon glyphicon-user"></div>
+				<p>solapower613</p>
+			</div>
+			<div class="bidderInfo">
+				<b style="font-size: 1.25em;">Bid Time</b>
+				<p>Bid Amount</p>
+				<div class="bidderLocation">
+					Tokyo, Japan
+					<!-- 	<% out.println("<div id=\"location\" data-location=\"" + item.location + "," + item.country + "\">" + item.location + "," + item.country + "</div>"); %> -->
+				</div>
+				<div class="bidderRating">
+					<span class="glyphicon glyphicon-star"></span>
+					<span class="glyphicon glyphicon-star"></span>
+					<span class="glyphicon glyphicon-star"></span>
+					<span class="glyphicon glyphicon-star-empty"></span>
+					<span class="glyphicon glyphicon-star-empty"></span>
+				</div>
+			</div>
+			<hr>
+			<div class="userInfo">
+				<div class="glyphicon glyphicon-user"></div>
+				<p>solapower613</p>
+			</div>
+			<div class="bidderInfo">
+				<b style="font-size: 1.25em;">Bid Time</b>
+				<p>Bid Amount</p>
+				<div class="bidderLocation">
+					Tokyo, Japan
+					<!-- 	<% out.println("<div id=\"location\" data-location=\"" + item.location + "," + item.country + "\">" + item.location + "," + item.country + "</div>"); %> -->
+				</div>
+				<div class="bidderRating">
+					<span class="glyphicon glyphicon-star"></span>
+					<span class="glyphicon glyphicon-star"></span>
+					<span class="glyphicon glyphicon-star"></span>
+					<span class="glyphicon glyphicon-star-empty"></span>
+					<span class="glyphicon glyphicon-star-empty"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="map-wrapper">
+		<div id="map_canvas"></div>
+	</div>
+	<div id="search">
         <form action="http://localhost:1448/eBay/item" method="get">
-	       <h3>Item Search</h3>
-	       <p>ItemID: <input type="text" name="id"></p>
-         <input type="submit" value="Submit">
+            <input type="text" name="id" class="form-control" placeholder="Search by item id">
+            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
         </form>
     </div>
-	<h1>
-		<%
-			Item item = (Item) request.getAttribute("message");
-			out.println(item.name);
-			//out.println(request.getAttribute("xml"));
-		%>
-	</h1>
-	<% out.println("<div id=\"location\" data-location=\"" + item.location + "," + item.country + "\">" + item.location + "," + item.country + "</div>"); %>
-	<% out.println("<div id=\"latitude\" data-latitude=\"" + item.latitude + "\">" + item.latitude + "</div>"); %>
-	<% out.println("<div id=\"longitude\" data-longitude=\"" + item.longitude + "\">" + item.longitude + "</div>"); %>
-	<div id="longitude"><% out.println(item.longitude); %> </div>
-	<div id="map_canvas"> </div> 
-
 </body>
 
 </html>

@@ -1,22 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="item.js"></script>
+<!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-<script src="item.js"></script>  
+    <!-- Custom CSS -->
+    <link href="css/menu.css" rel="stylesheet">
+    <style>
+        body {
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            background-opacity: 0.5;
+            z-index:0;
+            color: black;
+        }
+        .wrapper {
+            height: 10em;
+            position: relative;
+        }
+        #hero {
+            text-align: center;
+            margin-top: 20%;
+            top: 100%;
+            left: 50%;
+            color: white;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        }
+        .btn-primary {
+            border-radius: 5px;
+            color: white;
+            font-size: 20px; 
+            margin: 20px 0px 20px 0px;
+        }
+        .btn-success {
+            width: 100%;
+        }
+        form {
+            vertical-align: middle;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 50%;
+            height: 45px;
+            display: inline-block;
+        }
+        button[type="submit"] {
+            margin-left: 10px;
+            display: inline-block;
+        }
+        #search {
+          position: fixed;
+          bottom: 0;
+          background-color: rgba(1, 1, 1, 0.7);
+          width: 100%;
+        }
+        h1 {
+          font-size: 65px;
+        }
+    </style>
 </head>
 <title>CS144: Item Search</title>
-<body>
-    <div style="text-align: center;">
-        <form action="http://localhost:1448/eBay/item" method="get">
-	       <h3>Item Search</h3>
-	       <p>ItemID: <input type="text" name="id"></p>
-        </form>
-    </div>
-    <hr>
-    <div>
-	   <h3>Report:</h3>
-	   <p></p>
+<body style="background-image:url(./img/hero-img.jpg)">
+    <div id="wrapper">
+        <!-- Page Content -->
+        <div id="hero" class="container-fluid">
+          <h1>CS 144: PROJECT 4</h1>
+          <h3>Item Search</h3>
+        </div>
+        <div id="search">
+            <form action="http://localhost:1448/eBay/item" method="get">
+                <input type="text" name="id" class="form-control" placeholder="Search by item id">
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
     </div>
 
 </body>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 </html>
+

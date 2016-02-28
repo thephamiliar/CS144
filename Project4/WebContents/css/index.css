@@ -1,0 +1,30 @@
+body {
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-opacity: 0.5;
+	z-index:0;
+	color: black;
+}
+.wrapper {
+	height: 10em;
+	position: relative;
+}
+#hero {
+	text-align: center;
+	margin-top: 40%;
+	top: 100%;
+	left: 50%;
+	margin-right: -50%;
+}
+.btn-primary {
+	border-radius: 2px;
+	color: white;
+	font-size: 20px; 
+	margin: 20px 0px 20px 0px;
+}
+.btn-success {
+	width: 100%;
+}
+

@@ -17,6 +17,14 @@
     padding-left: 250px;
 }
 
+div.suggestions {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid black;
+    background-color: white !important;
+    position: relative;
+}
+
 body {
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -47,24 +55,34 @@ body {
 .btn-success {
     width: 100%;
 }
+#search-box{
+    width: 50%;
+    height: 45px;
+    margin-top: 10px;
+    display: inline-block;
+}
 form {
+    height: 45px;
+    visibility: visible;
     vertical-align: middle;
     text-align: center;
 }
 input[type="text"] {
-    width: 50%;
     height: 45px;
-    display: inline-block;
 }
 button[type="submit"] {
+    position: fixed;
+    top: -5px;
     margin-left: 10px;
     display: inline-block;
 }
 #search {
   position: fixed;
-  bottom: 0;
+  top: 0;
   background-color: rgba(1, 1, 1, 0.7);
   width: 100%;
+  height: 80px;
+  z-index: 1000;
 }
 h1 {
   font-size: 65px;

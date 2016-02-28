@@ -58,6 +58,10 @@ class MyParser {
 	"Notation",
     };
 
+
+
+    static final String OLD_FORMAT = "MMM-dd-yy HH:mm:ss";
+    static final String NEW_FORMAT = "yyyy-MM-dd HH:mm:ss";
     
     static class MyErrorHandler implements ErrorHandler {
         
@@ -135,6 +139,23 @@ class MyParser {
             return "";
     }
 
+    /**
+    * Change datestring from OLD_FORMAT TO NEW_FORMAT
+    *
+    * 
+    */
+    static String formatDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(OLD_FORMAT);
+        try {
+            Date date = dateFormat.parse(dateString);
+            dateFormat.applyPattern(NEW_FORMAT);
+            dateString = dateFormat.format(date); 
+        } catch (Exception e) {
+                
+            }
+        return dateString;
+    }
+
     static Item processDoc(Document doc) {
         /* At this point 'doc' contains a DOM representation of an 'Items' XML
          * file. Use doc.getDocumentElement() to get the root Element. */ 
@@ -169,6 +190,19 @@ class MyParser {
 
                 rItem.bids.add(bid);
             }
+        Collections.sort(rItem.bids, new Comparator<Bid>() {
+            @Override
+            public int compare(Bid b1, Bid b2) {
+                try {
+                    String date1 = formatDate(b1.time);
+                    String date2 = formatDate(b2.time);
+                    return date2.compareTo(date1);
+                } catch (Exception e) {
+                    System.err.println("compare date error");
+                    return -1;
+                }
+            }
+        });
 
         //get Location
         Element location = getElementByTagNameNR(item, "Location");

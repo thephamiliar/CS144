@@ -11,16 +11,19 @@
 <title>CS144: Item Search</title>
 <body style="background-image:url(./img/hero-img.jpg)">
     <div id="wrapper">
+        <div id="search">
+            <form action="http://localhost:1448/eBay/item" method="get">
+                <div id="search-box">
+                    <input type="text" name="id" class="form-control" placeholder="Search by item id">
+                </div>
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+
         <!-- Page Content -->
         <div id="hero" class="container-fluid">
           <h1>CS 144: PROJECT 4</h1>
           <h3>Item Search</h3>
-        </div>
-        <div id="search">
-            <form action="http://localhost:1448/eBay/item" method="get">
-                <input type="text" name="id" class="form-control" placeholder="Search by item id">
-                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-            </form>
         </div>
     </div>
 

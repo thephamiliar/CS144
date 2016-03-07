@@ -92,7 +92,9 @@
 							<td>Currently: <% out.println(item.currently); %></td>
 							<td><% 
 									if (item.buyPrice.length() >= 0) {
+										out.println("<form action=\"https://localhost:8443/eBay/payment\" method=\"get\">");
 										out.println("<button type=\"submit\" class=\"btn btn-primary\" id=\"payNow\">Pay Now</button>");
+										out.println("</form>");
 									}
 								%>
 							</td>

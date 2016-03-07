@@ -9,16 +9,10 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-	<script src="item.js"></script>
-	<script type="text/javascript" 
-	    src="http://maps.google.com/maps/api/js?sensor=false"> 
-	</script>  
-
 	<title>Credit Card Input Page</title>
 </head>
 
-<body onload="init()">
-	<% Item item = (Item) request.getAttribute("message"); %>	
+<body>
 	<div id="content-wrapper">
 		<div id="content">
 			<div>
@@ -28,9 +22,9 @@
 				<div class="info">
 					 <table>
 						<tr>
-							<td>ItemID: <% out.println(item.itemId); %></td>
-							<td>Item Name: <% out.println(item.name); %></td>
-							<td>Buy Price: <% out.println(item.buyPrice); %></td>
+							<td>ItemID: <% out.println(request.getAttribute("ItemID")); %></td>
+							<td>Item Name: <% out.println(request.getAttribute("ItemName")); %></td>
+							<td>Buy Price: <% out.println(request.getAttribute("Buy_Price")); %></td>
 							<td>
 								<form action="">
 									<input id="paymentQuery" type="text" name="q" class="form-control" placeholder="Credit Card Number">

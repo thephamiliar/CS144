@@ -1,0 +1,27 @@
+body {
+	background-color: #F5F5F5;
+	height: 100%;
+}
+
+#content-wrapper {
+	padding: 10% 0 2.5% 15%;
+}
+
+#content {
+	width: 80%;
+}
+
+#results {
+	padding: 2.5% 0 0 0;
+}
+
+#previous {
+	display: inline-block;
+	float: left;
+}
+
+#next {
+	display: inline-block;
+	float: right;
+	right: 0px;
+}

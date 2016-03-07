@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="item.js"></script>
+<!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/menu.css" rel="stylesheet">
+
+    <!-- Javscripts -->
+    <script src="suggest.js"></script>
+    <script type="text/javascript">
+            window.onload = function () {
+                var oTextbox = new AutoSuggestControl(document.getElementById("inputQuery"), new StateSuggestions()); 
+            }
+    </script>
+</head>
+<title>CS144: Keyword Search</title>
+<body style="background-image:url(./img/hero-img.jpg)">
+    <div id="wrapper">
+        <div id="search">
+            <form action="http://localhost:1448/eBay/search" method="get">
+                <div id="search-box">
+                    <input id="inputQuery" type="text" name="q" class="form-control" placeholder="Search by keyword">
+                </div>
+                <input type="hidden" name="numResultsToSkip" value=0>
+                <input type="hidden" name="numResultsToReturn" value=30>
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+        <!-- Page Content -->
+        <div id="hero" class="container-fluid">
+          <h1>CS 144: PROJECT 4</h1>
+          <h3>Keyword Search</h3>
+        </div>
+    </div>
+
+</body>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+</html>

@@ -90,7 +90,12 @@
 						</tr>
 						<tr>
 							<td>Currently: <% out.println(item.currently); %></td>
-							<td><button type="submit" class="btn btn-primary" id="payNow">Pay Now</button></td>
+							<td><% 
+									if (item.buyPrice.length() >= 0) {
+										out.println("<button type=\"submit\" class=\"btn btn-primary\" id=\"payNow\">Pay Now</button>");
+									}
+								%>
+							</td>
 						</tr>
 					</table> 
 				</div>
